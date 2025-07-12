@@ -37,7 +37,7 @@ export class UploaderComponent {
         size: file.size,
         status: UploaderStatus.IDLE,
         progress: 0,
-        hovered: false
+        hovered: false,
       })
       // if (file.size >= 52428800) { // 50 MB
       //   this.toastService.callErrorToast('Single file size limit exceeded (50 MB)');

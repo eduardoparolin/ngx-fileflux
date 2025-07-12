@@ -46,4 +46,6 @@ export class MiniUploaderComponent {
         return null;
     }
   }
+
+  protected readonly UploaderStatus = UploaderStatus;
 }

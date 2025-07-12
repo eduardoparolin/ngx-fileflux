@@ -1,7 +1,7 @@
 <div class="upload-container">
   <header>
     <span>
-      {{ uploadService.status() | uploadQuantityStatus: uploadService.items().length }}
+      {{ uploadService.status() | uploadQuantityStatus: uploadService.items() }}
     </span>
     <mat-icon [matTooltip]="'Upload will continue on the background even if you close this dialog'" (click)="miniUploadService.toggle()">close</mat-icon>
   </header>
@@ -26,11 +26,31 @@
           <mat-icon>description</mat-icon>
           <span>{{ item.name }}</span>
         </div>
-        @if (!item.hovered) {
-          <mat-spinner mode="determinate" [value]="item.progress" [diameter]="18"></mat-spinner>
-        } @else {
-          <mat-icon>cancel</mat-icon>
+        @if (item.status === UploaderStatus.IDLE) {
+          @if (item.hovered) {
+            <mat-icon>cancel</mat-icon>
+          }
+        } @else if (item.status === UploaderStatus.STARTING) {
+
+        } @else if (item.status === UploaderStatus.UPLOADING) {
+          @if (!item.hovered) {
+            <mat-spinner mode="determinate" [value]="item.progress" [diameter]="18"></mat-spinner>
+          } @else {
+            <mat-icon>cancel</mat-icon>
+          }
+        } @else if (item.status === UploaderStatus.COMPLETED) {
+          <mat-icon style="color: green">check_circle</mat-icon>
+        } @else if (item.status === UploaderStatus.ERRORED) {
+          <mat-icon style="color: red">error</mat-icon>
         }
+
+<!--        @if (!item.hovered && item.progress < 100) {-->
+<!--          <mat-spinner mode="determinate" [value]="item.progress" [diameter]="18"></mat-spinner>-->
+<!--        } @else if (item.progress < 100) {-->
+<!--          <mat-icon>cancel</mat-icon>-->
+<!--        } @else if (item.progress >= 100) {-->
+<!--          <mat-icon style="color: green">check_circle</mat-icon>-->
+<!--        }-->
 
       </div>
     }

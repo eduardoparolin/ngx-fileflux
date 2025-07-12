@@ -1,6 +1,6 @@
 import {Component, inject} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {MiniUploaderComponent, UploaderComponent, MiniUploaderService} from 'uploader';
+import {MiniUploaderComponent, UploaderComponent, MiniUploaderService, UploaderService} from 'uploader';
 import {MatButton} from '@angular/material/button';
 
 @Component({
@@ -11,5 +11,6 @@ import {MatButton} from '@angular/material/button';
 })
 export class AppComponent {
   miniUploaderService = inject(MiniUploaderService);
+  uploaderService = inject(UploaderService);
   title = 'uploader-demo';
 }
