@@ -11,21 +11,18 @@
     right: 20px;
     display: flex;
     min-width: 230px;
-    border-color: #8e8eff;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     align-items: center;
     justify-content: center;
     background-color: #fffc;
     z-index: 10;
-    border-width: 1px;
-    border-style: solid;
-    box-shadow: 2px 4px 2px #00000066;
+    box-shadow: 1px 1px 6px #0006;
     flex-direction: column;
     gap: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
-    transition: bottom 400ms;
+    transition: bottom .4s;
   }
 
   header {
@@ -80,10 +77,23 @@
 
     .upload-item {
       width: 90%;
+      padding: 2px;
       height: 30px;
       display: flex;
       gap: 3px;
       align-items: center;
+      justify-content: space-between;
+
+      .item-description {
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .upload-item:hover {
+      background: rgb(0 0 0 / 7%);
+      border-radius: 5px;
+      cursor: pointer;
     }
   }
 }

@@ -1,6 +1,6 @@
 import {Injectable, signal} from '@angular/core';
 
-enum UploaderStatus {
+export enum UploaderStatus {
   IDLE = 'idle',
   UPLOADING = 'uploading',
   COMPLETED = 'completed',
@@ -12,6 +12,7 @@ export type UploadItem = {
   size: number;
   status: UploaderStatus;
   progress: number; // percentage
+  hovered: boolean; // Optional property to track hover state
 }
 
 @Injectable({
@@ -27,7 +28,8 @@ export class UploaderService {
         name: `File ${i + 1}`,
         size: Math.floor(Math.random() * 1000) + 100, // Random size between 100 and 1100
         status: UploaderStatus.IDLE,
-        progress: 0,
+        progress: i * 10, // Progress from 0 to 90,
+        hovered: false // Initial hover state
       });
     }
   }
