@@ -1,5 +1,5 @@
 import {Pipe, PipeTransform} from '@angular/core';
-import {UploaderStatus} from './uploader.service';
+import {UploaderStatus} from './uploader/uploader.service';
 
 @Pipe({
   name: 'uploadStatus',
