@@ -1,0 +1,26 @@
+<div class="upload-container">
+  <header>
+    <span>
+      Uploading({{uploadService.items().length}})...
+    </span>
+    <mat-icon>close</mat-icon>
+  </header>
+  <div class="status-container">
+    <div class="status-bar">
+    <span class="status-text">
+      Starting upload...
+    </span>
+      <span class="cancel-link">
+      Cancel
+    </span>
+    </div>
+  </div>
+  <div class="uploads-container">
+    @for (item of uploadService.items(); track item.id) {
+      <div class="upload-item">
+        <mat-icon>description</mat-icon>
+        <span>{{item.name}}</span>
+      </div>
+    }
+  </div>
+</div>

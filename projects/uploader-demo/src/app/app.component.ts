@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {UploaderComponent} from 'uploader';
+import {MiniUploaderComponent, UploaderComponent, MiniUploaderService} from 'uploader';
+import {MatButton} from '@angular/material/button';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, UploaderComponent],
+  imports: [RouterOutlet, UploaderComponent, MiniUploaderComponent, MatButton],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
+  miniUploaderService = inject(MiniUploaderService);
   title = 'uploader-demo';
 }
