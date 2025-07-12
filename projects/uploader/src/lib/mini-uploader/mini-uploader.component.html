@@ -41,17 +41,12 @@
         } @else if (item.status === UploaderStatus.COMPLETED) {
           <mat-icon style="color: green">check_circle</mat-icon>
         } @else if (item.status === UploaderStatus.ERRORED) {
-          <mat-icon style="color: red">error</mat-icon>
+          @if (item.hovered) {
+            <mat-icon (click)="uploadService.retryUpload(item)">replay</mat-icon>
+          } @else {
+            <mat-icon style="color: red">error</mat-icon>
+          }
         }
-
-<!--        @if (!item.hovered && item.progress < 100) {-->
-<!--          <mat-spinner mode="determinate" [value]="item.progress" [diameter]="18"></mat-spinner>-->
-<!--        } @else if (item.progress < 100) {-->
-<!--          <mat-icon>cancel</mat-icon>-->
-<!--        } @else if (item.progress >= 100) {-->
-<!--          <mat-icon style="color: green">check_circle</mat-icon>-->
-<!--        }-->
-
       </div>
     }
   </div>

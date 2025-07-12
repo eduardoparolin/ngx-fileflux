@@ -48,4 +48,6 @@ export class UploaderComponent {
     });
     this.uploadService.addMultipleItems(filesToUpload);
   }
+
+  protected readonly UploaderStatus = UploaderStatus;
 }

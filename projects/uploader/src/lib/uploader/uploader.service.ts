@@ -61,12 +61,15 @@ export class UploaderService {
       this.status.set(UploaderStatus.STARTING);
       // Simulate starting the upload process
       for (let item of this.items()) {
-        item.status = UploaderStatus.UPLOADING;
         await this.uploadItem(item);
       }
       this.status.set(UploaderStatus.UPLOADING);
     }
     console.log(this.status(), this.items());
+  }
+
+  async retryUpload(item: UploadItem) {
+    this.__simulateUpload(item)
   }
 
   async uploadItem(item: UploadItem) {
@@ -79,6 +82,11 @@ export class UploaderService {
       }
       return;
     }
+    this.__simulateUpload(item)
+  }
+
+  __simulateUpload(item: UploadItem) {
+    item.status = UploaderStatus.UPLOADING;
     const interval = setInterval(() => {
       if (item.progress < 100) {
         item.progress += Math.floor(Math.random() * 30); // Simulate progress
