@@ -8,6 +8,8 @@ export class UploadStatusPipe implements PipeTransform {
   transform(value: UploaderStatus): string {
     switch (value) {
       case UploaderStatus.IDLE:
+        return 'Ready to Upload';
+      case UploaderStatus.STARTING:
         return 'Starting...';
       case UploaderStatus.UPLOADING:
         return 'Uploading...';

@@ -11,6 +11,7 @@
     right: 20px;
     display: flex;
     min-width: 230px;
+    max-width: 330px;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
     align-items: center;
@@ -86,7 +87,13 @@
 
       .item-description {
         display: flex;
+        max-width: 90%;
         align-items: center;
+        span {
+          max-width: 90%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
       }
     }
 

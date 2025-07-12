@@ -2,6 +2,7 @@ import {Injectable, signal} from '@angular/core';
 
 export enum UploaderStatus {
   IDLE = 'idle',
+  STARTING = 'starting',
   UPLOADING = 'uploading',
   COMPLETED = 'completed',
 }
@@ -22,16 +23,16 @@ export class UploaderService {
   status = signal<UploaderStatus>(UploaderStatus.IDLE);
   items = signal<UploadItem[]>([]);
   constructor() {
-    for (let i = 0; i < 10; i++) {
-      this.addItem({
-        id: `item-${i}`,
-        name: `File ${i + 1}`,
-        size: Math.floor(Math.random() * 1000) + 100, // Random size between 100 and 1100
-        status: UploaderStatus.IDLE,
-        progress: i * 10, // Progress from 0 to 90,
-        hovered: false // Initial hover state
-      });
-    }
+    // for (let i = 0; i < 10; i++) {
+    //   this.addItem({
+    //     id: `item-${i}`,
+    //     name: `File ${i + 1}`,
+    //     size: Math.floor(Math.random() * 1000) + 100, // Random size between 100 and 1100
+    //     status: UploaderStatus.IDLE,
+    //     progress: i * 10, // Progress from 0 to 90,
+    //     hovered: false // Initial hover state
+    //   });
+    // }
   }
 
   /**
@@ -45,5 +46,23 @@ export class UploaderService {
     if (this.status() === UploaderStatus.IDLE) {
       this.items.update(currentItems => [...currentItems, item]);
     }
+  }
+
+  /**
+   * Adds multiple items to the uploader's list of items.
+   * Only if the uploader is in the IDLE state.
+   *
+   * @param items - An array of upload items to be added
+   * @returns void
+   */
+  addMultipleItems(items: UploadItem[]) {
+    if (this.status() === UploaderStatus.IDLE) {
+      this.items.update(currentItems => [...currentItems, ...items]);
+    }
+  }
+
+  remove(item: UploadItem) {
+    this.items.update(currentItems => currentItems.filter(i => i.id !== item.id));
+
   }
 }

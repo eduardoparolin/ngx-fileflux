@@ -1,10 +1,11 @@
-import {Component, inject, signal} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {MatIcon} from '@angular/material/icon';
-import {UploaderService} from '../uploader/uploader.service';
+import {UploaderService, UploaderStatus} from '../uploader/uploader.service';
 import {MiniUploaderService} from './mini-uploader.service';
 import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {MatTooltip} from '@angular/material/tooltip';
 import {UploadStatusPipe} from '../upload-status.pipe';
+import {UploadQuantityStatusPipe} from '../upload-quantity-status.pipe';
 
 @Component({
   selector: 'mini-uploader',
@@ -13,6 +14,7 @@ import {UploadStatusPipe} from '../upload-status.pipe';
     MatProgressSpinner,
     MatTooltip,
     UploadStatusPipe,
+    UploadQuantityStatusPipe,
   ],
   templateUrl: './mini-uploader.component.html',
   styleUrls: ['./mini-uploader.component.scss'],
@@ -25,5 +27,23 @@ export class MiniUploaderComponent {
   miniUploadService = inject(MiniUploaderService);
 
   constructor() {
+  }
+
+  getActionText() {
+    if (this.uploadService.items().length === 0) {
+      return null;
+    }
+    switch (this.uploadService.status()) {
+      case UploaderStatus.IDLE:
+        return 'Start';
+      case UploaderStatus.STARTING:
+        return 'Cancel';
+      case UploaderStatus.UPLOADING:
+        return 'Cancel';
+      case UploaderStatus.COMPLETED:
+        return null;
+      default:
+        return null;
+    }
   }
 }
