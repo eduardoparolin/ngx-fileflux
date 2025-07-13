@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, input} from '@angular/core';
 import {MatIcon} from '@angular/material/icon';
 import {UploaderService, UploaderStatus} from '../uploader/uploader.service';
 import {MiniUploaderService} from './mini-uploader.service';
@@ -25,6 +25,7 @@ import {UploadQuantityStatusPipe} from '../upload-quantity-status.pipe';
 export class MiniUploaderComponent {
   uploadService = inject(UploaderService);
   miniUploadService = inject(MiniUploaderService);
+  completedActionName = input<string>()
 
   constructor() {
   }
@@ -41,7 +42,7 @@ export class MiniUploaderComponent {
       case UploaderStatus.UPLOADING:
         return 'Cancel';
       case UploaderStatus.COMPLETED:
-        return null;
+        return this.completedActionName();
       default:
         return null;
     }

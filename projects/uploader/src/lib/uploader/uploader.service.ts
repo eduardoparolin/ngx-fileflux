@@ -1,4 +1,5 @@
-import {Injectable, signal} from '@angular/core';
+import {inject, Injectable, signal} from '@angular/core';
+import {Storage, ref, uploadBytesResumable} from '@angular/fire/storage';
 
 export enum UploaderStatus {
   IDLE = 'idle',
@@ -22,6 +23,8 @@ export type UploadItem = {
   providedIn: 'root'
 })
 export class UploaderService {
+  private readonly storage = inject(Storage);//later check if this is needed
+  simulated = false;
   status = signal<UploaderStatus>(UploaderStatus.IDLE);
   items = signal<UploadItem[]>([]);
   constructor() {}
@@ -59,13 +62,11 @@ export class UploaderService {
   async startUpload() {
     if (this.status() === UploaderStatus.IDLE) {
       this.status.set(UploaderStatus.STARTING);
-      // Simulate starting the upload process
       for (let item of this.items()) {
         await this.uploadItem(item);
       }
       this.status.set(UploaderStatus.UPLOADING);
     }
-    console.log(this.status(), this.items());
   }
 
   async retryUpload(item: UploadItem) {
@@ -73,16 +74,21 @@ export class UploaderService {
   }
 
   async uploadItem(item: UploadItem) {
-    const hasError = Math.random() < 0.2; // Simulate a 20% chance of error
-    if (hasError) {
-      item.status = UploaderStatus.ERRORED;
-      item.error = 'Upload failed due to a simulated error.';
-      if (this.items().every(i => i.status === UploaderStatus.COMPLETED || i.status === UploaderStatus.ERRORED)) {
-        this.status.set(UploaderStatus.COMPLETED);
+    if (this.simulated) {
+      const hasError = Math.random() < 0.2; // Simulate a 20% chance of error
+      if (hasError) {
+        item.status = UploaderStatus.ERRORED;
+        item.error = 'Upload failed due to a simulated error.';
+        if (this.items().every(i => i.status === UploaderStatus.COMPLETED || i.status === UploaderStatus.ERRORED)) {
+          this.status.set(UploaderStatus.COMPLETED);
+        }
+        return;
       }
-      return;
+      this.__simulateUpload(item)
+    } else {
+      const storageRef = ref(this.storage, item.name);
+      uploadBytesResumable(storageRef, file);
     }
-    this.__simulateUpload(item)
   }
 
   __simulateUpload(item: UploadItem) {
