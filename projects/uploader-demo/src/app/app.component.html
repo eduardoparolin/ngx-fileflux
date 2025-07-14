@@ -1,8 +1,11 @@
-<div>ABULABA</div>
-<div class="uploader">
-  <lib-uploader></lib-uploader>
-</div>
-<mini-uploader completedActionName="Go Somewhere"></mini-uploader>
-<button mat-raised-button (click)="miniUploaderService.toggle()">Toggle</button>
-<button mat-raised-button (click)="uploaderService.startUpload()">Start</button>
-<router-outlet />
+@if (sAuthState() == null || sAuthState()?.uid == null) {
+  <app-login></app-login>
+} @else {
+  <div class="uploader">
+    <lib-uploader></lib-uploader>
+  </div>
+  <mini-uploader completedActionName="Go Somewhere"></mini-uploader>
+  <button mat-raised-button (click)="miniUploaderService.toggle()">Toggle</button>
+  <button mat-raised-button (click)="uploaderService.startUpload()">Start</button>
+  <router-outlet />
+}

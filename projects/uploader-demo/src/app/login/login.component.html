@@ -1,0 +1,11 @@
+<div class="login-container">
+  <mat-form-field appearance="fill">
+    <mat-label>Email</mat-label>
+    <input matInput placeholder="Enter your username" [formControl]="emailControl" />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Password</mat-label>
+    <input matInput placeholder="Enter your username" [formControl]="passwordControl" />
+  </mat-form-field>
+  <button mat-raised-button (click)="login()">Login</button>
+</div>
