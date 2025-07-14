@@ -24,7 +24,7 @@
       <div class="upload-item" (mouseover)="item.hovered = true" (mouseout)="item.hovered = false">
         <div class="item-description">
           <mat-icon>description</mat-icon>
-          <span>{{ item.name }}</span>
+          <span>{{ item.file.name }}</span>
         </div>
         @if (item.status === UploaderStatus.IDLE) {
           @if (item.hovered) {

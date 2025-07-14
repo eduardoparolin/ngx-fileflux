@@ -1,5 +1,5 @@
 import {inject, Injectable, signal} from '@angular/core';
-import {Storage, ref, uploadBytesResumable} from '@angular/fire/storage';
+import {ref, Storage, uploadBytesResumable} from '@angular/fire/storage';
 
 export enum UploaderStatus {
   IDLE = 'idle',
@@ -11,8 +11,7 @@ export enum UploaderStatus {
 
 export type UploadItem = {
   id: string;
-  name: string;
-  size: number;
+  file: File;
   status: UploaderStatus;
   progress: number; // percentage
   error?: string;
@@ -86,8 +85,30 @@ export class UploaderService {
       }
       this.__simulateUpload(item)
     } else {
-      const storageRef = ref(this.storage, item.name);
-      uploadBytesResumable(storageRef, file);
+      const storageRef = ref(this.storage, item.file.name);
+      const uploadTask = uploadBytesResumable(storageRef, item.file);
+      item.status = UploaderStatus.UPLOADING;
+      uploadTask.on('state_changed', {
+        'next': (snapshot) => {
+          item.progress = snapshot.bytesTransferred / snapshot.totalBytes * 100;
+          if (this.items().every(i => i.status === UploaderStatus.COMPLETED || i.status === UploaderStatus.ERRORED)) {
+            this.status.set(UploaderStatus.COMPLETED);
+          }
+          this.items.update(currentItems => [...currentItems]);
+        },
+        'error': (error) => {
+          item.status = UploaderStatus.ERRORED;
+          item.error = error.name;
+        },
+        'complete': () => {
+          item.progress = 100;
+          item.status = UploaderStatus.COMPLETED;
+          if (this.items().every(i => i.status === UploaderStatus.COMPLETED || i.status === UploaderStatus.ERRORED)) {
+            this.status.set(UploaderStatus.COMPLETED);
+          }
+          this.items.update(currentItems => [...currentItems]);
+        },
+      });
     }
   }
 

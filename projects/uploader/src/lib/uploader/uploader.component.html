@@ -8,7 +8,7 @@
 <div class="items-container">
   @for (item of uploadService.items(); track item.id) {
     <div class="item">
-      <span>{{ item.name }}</span>
+      <span>{{ item.file.name }}</span>
       @if (item.status === UploaderStatus.IDLE) {
         <mat-icon (click)="uploadService.remove(item)">cancel</mat-icon>
       }

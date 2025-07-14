@@ -33,8 +33,7 @@ export class UploaderComponent {
       }
       filesToUpload.push({
         id: crypto.randomUUID(),
-        name: file.name,
-        size: file.size,
+        file: file,
         status: UploaderStatus.IDLE,
         progress: 0,
         hovered: false,
