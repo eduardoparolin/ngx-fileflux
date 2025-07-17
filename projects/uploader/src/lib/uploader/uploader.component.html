@@ -5,7 +5,7 @@
       <mat-icon>cloud_upload</mat-icon>
       <span>Drag and drop or click to select files</span>
     </label>
-    <span class="file-upload-instruction">Supported formats: .jpeg, .jpg, .png, .pdf, .docx, .doc, .xlsx, .xls</span>
+    <span class="file-upload-instruction">Supported formats: {{controller().acceptItems.join(', ')}}</span>
   </div>
 } @else {
   <div class="items-container">
@@ -21,7 +21,7 @@
 }
 <input
   type="file"
-  multiple accept=".jpeg, .jpg, .png, .pdf, .docx, .doc, .xlsx, .xls"
+  [accept]="controller().acceptItems.join(', ')"
   id="file_upload"
   (change)="onMultipleFileUpload($event)"
 />

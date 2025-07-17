@@ -3,7 +3,7 @@
     <span>
       {{ controller().status() | uploadQuantityStatus: controller().items() }}
     </span>
-    <mat-icon [matTooltip]="'Upload will continue on the background even if you close this dialog'" (click)="miniUploadService.toggle()">close</mat-icon>
+    <mat-icon [matTooltipDisabled]="controller().items().length === 0" [matTooltip]="'Upload will continue on the background even if you close this dialog'" (click)="miniUploadService.toggle()">close</mat-icon>
   </header>
   <div class="status-container">
     @if (controller().items().length > 0) {

@@ -18,8 +18,11 @@ export type UploadItem = {
   hovered: boolean; // Optional property to track hover state
 }
 
+type AcceptInputTypes = '.jpg' | '.jpeg' | '.png' | '.pdf' | '.docx' | '.xlsx' | '.mp4' | '.avi' | '.mkv' | '.mov' | '.webm' | '.gif' | '.txt' | '.zip';
+
 export class UploaderController {
   uploadId: string;
+  acceptItems: AcceptInputTypes[] = [];
   items = signal<UploadItem[]>([]);
   get status() {
     if (this.items().length === 0) {
@@ -36,8 +39,14 @@ export class UploaderController {
     }
   }
 
-  constructor(uploadId: string) {
+  constructor(uploadId: string, accept: AcceptInputTypes[]) {
     this.uploadId = uploadId;
+    this.acceptItems = accept;
+  }
+
+  accept(accept: AcceptInputTypes): UploaderController {
+    this.acceptItems.push(accept);
+    return this;
   }
 }
 
