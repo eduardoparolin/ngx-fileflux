@@ -20,8 +20,11 @@ export type UploadItem = {
 
 export class UploaderController {
   uploadId: string;
-  items: WritableSignal<UploadItem[]> = signal<UploadItem[]>([]);
+  items = signal<UploadItem[]>([]);
   get status() {
+    if (this.items().length === 0) {
+      return signal<UploaderStatus>(UploaderStatus.IDLE);
+    }
     if (this.items().some((i) => i.status === UploaderStatus.IDLE)) {
       return signal<UploaderStatus>(UploaderStatus.IDLE);
     } else if (this.items().some((i) => i.status === UploaderStatus.UPLOADING)) {
@@ -66,6 +69,7 @@ export class UploaderService {
    * @returns void
    */
   addMultipleItems(controller: UploaderController, items: UploadItem[]) {
+    console.log(controller.items(), controller.status());
     if (controller.status() === UploaderStatus.IDLE) {
       controller.items.update(currentItems => [...currentItems, ...items]);
     }
