@@ -12,7 +12,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
-            "project": "projects/uploader/ng-package.json"
+            "project": "projects/uploader/ng-package.json",
           },
           "configurations": {
             "production": {
@@ -22,7 +22,7 @@
               "tsConfig": "projects/uploader/tsconfig.lib.json"
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "production",
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
