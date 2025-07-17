@@ -2,10 +2,10 @@
   <app-login></app-login>
 } @else {
   <div class="uploader">
-    <lib-uploader></lib-uploader>
+    <lib-uploader [controller]="controller"></lib-uploader>
   </div>
-  <mini-uploader completedActionName="Go Somewhere"></mini-uploader>
+  <mini-uploader [controller]="controller" completedActionName="Go Somewhere"></mini-uploader>
   <button mat-raised-button (click)="miniUploaderService.toggle()">Toggle</button>
-  <button mat-raised-button (click)="uploaderService.startUpload()">Start</button>
+  <button mat-raised-button (click)="uploaderService.startUpload(controller)">Start</button>
   <router-outlet />
 }

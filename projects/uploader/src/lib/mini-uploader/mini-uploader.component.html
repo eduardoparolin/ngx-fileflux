@@ -1,15 +1,15 @@
 <div class="upload-container">
   <header>
     <span>
-      {{ uploadService.status() | uploadQuantityStatus: uploadService.items() }}
+      {{ controller().status() | uploadQuantityStatus: controller().items() }}
     </span>
     <mat-icon [matTooltip]="'Upload will continue on the background even if you close this dialog'" (click)="miniUploadService.toggle()">close</mat-icon>
   </header>
   <div class="status-container">
-    @if (uploadService.items().length > 0) {
+    @if (controller().items().length > 0) {
       <div class="status-bar">
       <span class="status-text">
-        {{ uploadService.status() | uploadStatus }}
+        {{ controller().status() | uploadStatus }}
       </span>
         @if (getActionText()) {
           <span class="cancel-link">
@@ -20,7 +20,7 @@
     }
   </div>
   <div class="uploads-container">
-    @for (item of uploadService.items(); track item.id) {
+    @for (item of controller().items(); track item.id) {
       <div class="upload-item" (mouseover)="item.hovered = true" (mouseout)="item.hovered = false">
         <div class="item-description">
           <mat-icon>description</mat-icon>
@@ -42,7 +42,7 @@
           <mat-icon style="color: green">check_circle</mat-icon>
         } @else if (item.status === UploaderStatus.ERRORED) {
           @if (item.hovered) {
-            <mat-icon (click)="uploadService.retryUpload(item)">replay</mat-icon>
+            <mat-icon (click)="uploadService.retryUpload(item, controller())">replay</mat-icon>
           } @else {
             <mat-icon style="color: red">error</mat-icon>
           }

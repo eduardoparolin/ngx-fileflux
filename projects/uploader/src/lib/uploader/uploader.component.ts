@@ -1,6 +1,6 @@
-import {Component, inject} from '@angular/core';
+import {Component, inject, input, OnInit} from '@angular/core';
 import {MatIcon} from '@angular/material/icon';
-import {UploaderService, UploaderStatus, UploadItem} from './uploader.service';
+import {UploaderController, UploaderService, UploaderStatus, UploadItem} from './uploader.service';
 
 @Component({
   selector: 'lib-uploader',
@@ -12,6 +12,7 @@ import {UploaderService, UploaderStatus, UploadItem} from './uploader.service';
 })
 export class UploaderComponent {
   uploadService = inject(UploaderService)
+  controller = input.required<UploaderController>();
 
   onMultipleFileUpload(e: { target: { files: { type: string; size: number }[] } } & any) {
     const files = e.target.files;
@@ -45,7 +46,7 @@ export class UploaderComponent {
       // const formattedFile = new File([file], file.name.split(' ').join('_'), { type: file.type });
       // files.push(formattedFile);
     });
-    this.uploadService.addMultipleItems(filesToUpload);
+    this.uploadService.addMultipleItems(this.controller(), filesToUpload);
   }
 
   protected readonly UploaderStatus = UploaderStatus;

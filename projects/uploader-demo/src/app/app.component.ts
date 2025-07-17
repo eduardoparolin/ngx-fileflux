@@ -1,6 +1,12 @@
 import {Component, inject, OnInit} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import {MiniUploaderComponent, UploaderComponent, MiniUploaderService, UploaderService} from 'uploader';
+import {
+  MiniUploaderComponent,
+  UploaderComponent,
+  MiniUploaderService,
+  UploaderService,
+  UploaderController
+} from 'uploader';
 import {MatButton} from '@angular/material/button';
 import {getDownloadURL, Storage, ref} from '@angular/fire/storage';
 import {LoginComponent} from './login/login.component';
@@ -22,6 +28,8 @@ export class AppComponent implements OnInit {
   sAuthState = toSignal(authState(this.auth), {initialValue: null});
 
   private readonly storage: Storage = inject(Storage);
+
+  controller = new UploaderController('didi');
 
   ngOnInit() {
     // Initialize the uploader service if needed
