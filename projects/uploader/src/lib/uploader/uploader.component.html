@@ -1,9 +1,4 @@
-<input
-  type="file"
-  multiple accept=".jpeg, .jpg, .png, .pdf, .docx, .doc, .xlsx, .xls"
-  id="file_upload"
-  (change)="onMultipleFileUpload($event)"
-/>
+
 @if (controller().items().length === 0) {
   <div class="text-container">
     <label for="file_upload" class="file-upload-label">
@@ -12,14 +7,21 @@
     </label>
     <span class="file-upload-instruction">Supported formats: .jpeg, .jpg, .png, .pdf, .docx, .doc, .xlsx, .xls</span>
   </div>
+} @else {
+  <div class="items-container">
+    @for (item of controller().items(); track item.id) {
+      <div class="item">
+        <span>{{ item.file.name }}</span>
+        @if (item.status === UploaderStatus.IDLE) {
+          <button mat-icon-button><mat-icon class="cancel-icon" (click)="uploadService.remove(controller(), item)">cancel</mat-icon></button>
+        }
+      </div>
+    }
+  </div>
 }
-<div class="items-container">
-  @for (item of controller().items(); track item.id) {
-    <div class="item">
-      <span>{{ item.file.name }}</span>
-      @if (item.status === UploaderStatus.IDLE) {
-        <mat-icon (click)="uploadService.remove(controller(), item)">cancel</mat-icon>
-      }
-    </div>
-  }
-</div>
+<input
+  type="file"
+  multiple accept=".jpeg, .jpg, .png, .pdf, .docx, .doc, .xlsx, .xls"
+  id="file_upload"
+  (change)="onMultipleFileUpload($event)"
+/>

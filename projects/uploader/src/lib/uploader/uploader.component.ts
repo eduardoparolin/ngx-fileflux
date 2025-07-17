@@ -1,11 +1,13 @@
 import {Component, inject, input, OnInit} from '@angular/core';
 import {MatIcon} from '@angular/material/icon';
 import {UploaderController, UploaderService, UploaderStatus, UploadItem} from './uploader.service';
+import {MatIconButton} from '@angular/material/button';
 
 @Component({
   selector: 'lib-uploader',
   imports: [
-    MatIcon
+    MatIcon,
+    MatIconButton
   ],
   templateUrl: './uploader.component.html',
   styleUrls: ['./uploader.component.scss'],

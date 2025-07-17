@@ -28,7 +28,7 @@
         </div>
         @if (item.status === UploaderStatus.IDLE) {
           @if (item.hovered) {
-            <mat-icon>cancel</mat-icon>
+            <mat-icon (click)="uploadService.remove(controller(), item)">cancel</mat-icon>
           }
         } @else if (item.status === UploaderStatus.STARTING) {
 
