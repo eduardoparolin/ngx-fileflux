@@ -5,10 +5,12 @@ import {routes} from './app.routes';
 import {initializeApp, provideFirebaseApp} from '@angular/fire/app';
 import {getStorage, provideStorage} from '@angular/fire/storage';
 import {getAuth, provideAuth} from '@angular/fire/auth';
+import {provideEnvironmentFileFlux} from 'uploader';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({eventCoalescing: true}),
+    provideEnvironmentFileFlux(),
     provideRouter(routes), provideFirebaseApp(() => initializeApp({
       projectId: "aoa-labs",
       appId: "1:1078604004638:web:5b8e5c16f112f964de9d0f",

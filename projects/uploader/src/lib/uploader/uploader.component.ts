@@ -24,16 +24,6 @@ export class UploaderComponent {
       //   return;
       // }
       if (!(file instanceof File)) return;
-      if (
-        file.type !== 'application/pdf' &&
-        file.type !== 'image/jpeg' &&
-        file.type !== 'image/jpg' &&
-        file.type !== 'image/png' &&
-        file.type !== 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' &&
-        file.type !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      ) {
-        return;
-      }
       filesToUpload.push({
         id: crypto.randomUUID(),
         file: file,

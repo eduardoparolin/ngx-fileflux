@@ -50,9 +50,7 @@ export class UploaderController {
   }
 }
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class UploaderService {
   private readonly storage = inject(Storage);//later check if this is needed
   simulated = false;
