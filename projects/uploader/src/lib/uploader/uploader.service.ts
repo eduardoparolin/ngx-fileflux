@@ -16,6 +16,8 @@ export type UploadItem = {
   progress: number; // percentage
   error?: string;
   hovered: boolean; // Optional property to track hover state
+  prefix?: string; // Optional property to track prefix
+  name?: string; // Optional substitute for file name
 }
 
 type AcceptInputTypes = '.jpg' | '.jpeg' | '.png' | '.pdf' | '.docx' | '.xlsx' | '.mp4' | '.avi' | '.mkv' | '.mov' | '.webm' | '.gif' | '.txt' | '.zip';
@@ -23,6 +25,8 @@ type AcceptInputTypes = '.jpg' | '.jpeg' | '.png' | '.pdf' | '.docx' | '.xlsx' |
 export class UploaderController {
   uploadId: string;
   acceptItems: AcceptInputTypes[] = [];
+  uploadPrefixPredicate?: (file: File) => string;
+  nameReplacementsPredicate?: (file: File) => string;
   items = signal<UploadItem[]>([]);
   get status() {
     if (this.items().length === 0) {
@@ -39,13 +43,36 @@ export class UploaderController {
     }
   }
 
-  constructor(uploadId: string, accept: AcceptInputTypes[]) {
+  constructor(uploadId: string, accept: AcceptInputTypes[], uploadPrefixPredicate?: (file: File) => string, nameReplacementsPredicate?: (file: File) => string) {
     this.uploadId = uploadId;
     this.acceptItems = accept;
+    this.uploadPrefixPredicate = uploadPrefixPredicate;
+    this.nameReplacementsPredicate = nameReplacementsPredicate;
+  }
+
+  setNameReplacementsPredicate(predicate: (file: File) => string): UploaderController {
+    this.nameReplacementsPredicate = predicate;
+    this.items.update(currentItems => [...currentItems.map(item => ({
+      ...item,
+      name: predicate(item.file)
+    }))]);
+    return this;
   }
 
   accept(accept: AcceptInputTypes): UploaderController {
     this.acceptItems.push(accept);
+    return this;
+  }
+
+  addMultiple(items: UploadItem[]): UploaderController {
+    items = items.map((item) => {
+      return {
+        ...item,
+        prefix: this.uploadPrefixPredicate ? this.uploadPrefixPredicate!(item.file) : '',
+        name: this.nameReplacementsPredicate ? this.nameReplacementsPredicate!(item.file) : item.file.name,
+      }
+    });
+    this.items.update(currentItems => [...currentItems, ...items]);
     return this;
   }
 }
@@ -56,19 +83,6 @@ export class UploaderService {
   simulated = false;
   constructor() {}
   /**
-   * Adds an item to the uploader's list of items.
-   * Only if the uploader is in the IDLE state.
-   *
-   * @param item - The upload item to be added
-   * @returns void
-   */
-  addItem(controller: UploaderController, item: UploadItem) {
-    if (controller.status() === UploaderStatus.IDLE) {
-      controller.items.update(currentItems => [...currentItems, item]);
-    }
-  }
-
-  /**
    * Adds multiple items to the uploader's list of items.
    * Only if the uploader is in the IDLE state.
    *
@@ -78,7 +92,7 @@ export class UploaderService {
   addMultipleItems(controller: UploaderController, items: UploadItem[]) {
     console.log(controller.items(), controller.status());
     if (controller.status() === UploaderStatus.IDLE) {
-      controller.items.update(currentItems => [...currentItems, ...items]);
+      controller.addMultiple(items);
     }
   }
 
@@ -113,7 +127,7 @@ export class UploaderService {
       }
       this.__simulateUpload(item, controller)
     } else {
-      const storageRef = ref(this.storage, item.file.name);
+      const storageRef = ref(this.storage, `${item.prefix ?? ''}${item.name ?? item.file.name}`);
       const uploadTask = uploadBytesResumable(storageRef, item.file);
       item.status = UploaderStatus.UPLOADING;
       uploadTask.on('state_changed', {

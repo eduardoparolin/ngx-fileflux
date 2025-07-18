@@ -20,9 +20,6 @@ export class UploaderComponent {
     const files = e.target.files;
     const filesToUpload: UploadItem[] = [];
     Object.values(files).forEach((file) => {
-      // if (files.length >= 10) {
-      //   return;
-      // }
       if (!(file instanceof File)) return;
       filesToUpload.push({
         id: crypto.randomUUID(),
@@ -31,12 +28,6 @@ export class UploaderComponent {
         progress: 0,
         hovered: false,
       })
-      // if (file.size >= 52428800) { // 50 MB
-      //   this.toastService.callErrorToast('Single file size limit exceeded (50 MB)');
-      //   return;
-      // }
-      // const formattedFile = new File([file], file.name.split(' ').join('_'), { type: file.type });
-      // files.push(formattedFile);
     });
     this.uploadService.addMultipleItems(this.controller(), filesToUpload);
   }
