@@ -54,6 +54,7 @@
     flex-wrap: wrap;
     gap: 8px;
     position: relative;
+    align-content: flex-start;
 
     .item {
       width: 49%;

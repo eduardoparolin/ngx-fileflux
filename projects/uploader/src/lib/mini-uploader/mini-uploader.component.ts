@@ -1,4 +1,4 @@
-import {Component, HostListener, inject, input, OnInit} from '@angular/core';
+import {Component, HostListener, inject, input, OnInit, output} from '@angular/core';
 import {MatIcon} from '@angular/material/icon';
 import {UploaderController, UploaderService, UploaderStatus} from '../uploader/uploader.service';
 import {MiniUploaderService} from './mini-uploader.service';
@@ -26,7 +26,10 @@ export class MiniUploaderComponent {
   uploadService = inject(UploaderService);
   miniUploadService = inject(MiniUploaderService);
   completedActionName = input<string>()
+  completedAction = output<string>();
+  hideStartButton = input<boolean>(false);
   controller = input.required<UploaderController>();
+  rightOffset = input<number>(20);
 
   @HostListener('window:beforeunload', ['$event'])
   canDeactivate(event: BeforeUnloadEvent) {
@@ -45,7 +48,7 @@ export class MiniUploaderComponent {
     }
     switch (this.controller().status()) {
       case UploaderStatus.IDLE:
-        return 'Start';
+        return this.hideStartButton() ? null : 'Start';
       case UploaderStatus.STARTING:
         return 'Cancel';
       case UploaderStatus.UPLOADING:

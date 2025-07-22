@@ -1,4 +1,4 @@
-<div class="upload-container">
+<div class="upload-container" [style.right.px]="rightOffset()">
   <header>
     <span>
       {{ controller().status() | uploadQuantityStatus: controller().items() }}
@@ -12,7 +12,7 @@
         {{ controller().status() | uploadStatus }}
       </span>
         @if (getActionText()) {
-          <span class="cancel-link">
+          <span (click)="completedAction.emit(getActionText() ?? '')" class="cancel-link">
           {{ getActionText() }}
         </span>
         }
@@ -29,6 +29,8 @@
         @if (item.status === UploaderStatus.IDLE) {
           @if (item.hovered) {
             <mat-icon (click)="uploadService.remove(controller(), item)">cancel</mat-icon>
+          } @else {
+            <div class="holder"></div>
           }
         } @else if (item.status === UploaderStatus.STARTING) {
 

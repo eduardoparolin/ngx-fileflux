@@ -8,7 +8,6 @@
   .upload-container {
     position: fixed;
     bottom: -300px;
-    right: 20px;
     display: flex;
     min-width: 230px;
     max-width: 330px;
@@ -85,6 +84,10 @@
       align-items: center;
       justify-content: space-between;
 
+      .holder {
+        width: 23.99px;
+        height: 23.99px;
+      }
       .item-description {
         display: flex;
         max-width: 90%;
