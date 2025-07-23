@@ -20,7 +20,7 @@ export type UploadItem = {
   name?: string; // Optional substitute for file name
 }
 
-type AcceptInputTypes = '.jpg' | '.jpeg' | '.png' | '.pdf' | '.docx' | '.xlsx' | '.mp4' | '.avi' | '.mkv' | '.mov' | '.webm' | '.gif' | '.txt' | '.zip';
+type AcceptInputTypes = '.jpg' | '.jpeg' | '.png' | '.pdf' | '.docx' | '.xlsx' | '.mp4' | '.avi' | '.mkv' | '.mov' | '.webm' | '.gif' | '.txt' | '.zip' | '.mp3' | '.m4a' | '.flac' | '.wav' | '.au' | '.amr' | '.ogg';
 
 export class UploaderController {
   uploadId: string;

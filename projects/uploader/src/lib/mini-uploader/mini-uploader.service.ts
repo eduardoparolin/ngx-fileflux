@@ -12,4 +12,12 @@ export class MiniUploaderService {
     this.expanded.update(current => !current);
   }
 
+  close() {
+    this.expanded.set(false);
+  }
+
+  open() {
+    this.expanded.set(true);
+  }
+
 }
