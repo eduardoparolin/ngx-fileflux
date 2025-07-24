@@ -27,6 +27,7 @@ export class UploaderController {
   acceptItems: AcceptInputTypes[] = [];
   uploadPrefixPredicate?: (file: File) => string;
   nameReplacementsPredicate?: (file: File) => string;
+  maxItems = 10;
   items = signal<UploadItem[]>([]);
   get status() {
     if (this.items().length === 0) {
@@ -43,7 +44,8 @@ export class UploaderController {
     }
   }
 
-  constructor(uploadId: string, accept: AcceptInputTypes[], uploadPrefixPredicate?: (file: File) => string, nameReplacementsPredicate?: (file: File) => string) {
+  constructor(uploadId: string, accept: AcceptInputTypes[], maxItems: number = 10, uploadPrefixPredicate?: (file: File) => string, nameReplacementsPredicate?: (file: File) => string) {
+    this.maxItems = maxItems;
     this.uploadId = uploadId;
     this.acceptItems = accept;
     this.uploadPrefixPredicate = uploadPrefixPredicate;
@@ -90,7 +92,9 @@ export class UploaderService {
    * @returns void
    */
   addMultipleItems(controller: UploaderController, items: UploadItem[]) {
-    console.log(controller.items(), controller.status());
+    if (controller.items().length + items.length > controller.maxItems) {
+      throw new Error(`Cannot add more than ${controller.maxItems} items to the uploader.`);
+    }
     if (controller.status() === UploaderStatus.IDLE) {
       controller.addMultiple(items);
     }
