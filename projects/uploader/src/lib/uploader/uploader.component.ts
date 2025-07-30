@@ -78,6 +78,7 @@ export class UploaderComponent {
         console.error('Error adding files:', error);
       }
     }
+    e.target.value = '';
   }
 
   protected readonly UploaderStatus = UploaderStatus;

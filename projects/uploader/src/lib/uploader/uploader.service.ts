@@ -97,6 +97,8 @@ export class UploaderService {
     }
     if (controller.status() === UploaderStatus.IDLE) {
       controller.addMultiple(items);
+    } else {
+      throw new Error('Uploader is not in IDLE state. Cannot add items.');
     }
   }
 
