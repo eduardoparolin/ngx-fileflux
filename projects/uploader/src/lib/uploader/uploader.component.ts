@@ -61,6 +61,9 @@ export class UploaderComponent {
     const filesToUpload: UploadItem[] = [];
     Object.values(files).forEach((file) => {
       if (!(file instanceof File)) return;
+      const fileNameSplit = file.name.split('.');
+      const fileExtension = fileNameSplit[fileNameSplit.length - 1].toLowerCase();
+      if (!this.controller().acceptItems.includes(`.${fileExtension}`)) return;//FIXME: maybe emit error here?
       filesToUpload.push({
         id: crypto.randomUUID(),
         file: file,
