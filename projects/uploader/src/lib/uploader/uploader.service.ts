@@ -27,6 +27,7 @@ export class UploaderController {
   acceptItems: AcceptInputTypes[] = [];
   uploadPrefixPredicate?: (file: File) => string;
   nameReplacementsPredicate?: (file: File) => string;
+  acceptDuplicates = true;
   maxItems = 10;
   items = signal<UploadItem[]>([]);
   get status() {
@@ -44,8 +45,9 @@ export class UploaderController {
     }
   }
 
-  constructor(uploadId: string, accept: AcceptInputTypes[], maxItems: number = 10, uploadPrefixPredicate?: (file: File) => string, nameReplacementsPredicate?: (file: File) => string) {
+  constructor(uploadId: string, accept: AcceptInputTypes[], acceptDuplicates = true, maxItems: number = 10, uploadPrefixPredicate?: (file: File) => string, nameReplacementsPredicate?: (file: File) => string) {
     this.maxItems = maxItems;
+    this.acceptDuplicates = acceptDuplicates;
     this.uploadId = uploadId;
     this.acceptItems = accept;
     this.uploadPrefixPredicate = uploadPrefixPredicate;
@@ -74,7 +76,13 @@ export class UploaderController {
         name: this.nameReplacementsPredicate ? this.nameReplacementsPredicate!(item.file) : item.file.name,
       }
     });
-    this.items.update(currentItems => [...currentItems, ...items]);
+    let dedupedAlreadyAddedItems = [...items];
+    if (!this.acceptDuplicates) {
+      dedupedAlreadyAddedItems = items.filter((item) => {
+        return !this.items().some(i => i.file.name === item.file.name && i.file.size === item.file.size && i.file.lastModified === item.file.lastModified);
+      })
+    }
+    this.items.update(currentItems => [...currentItems, ...dedupedAlreadyAddedItems]);
     return this;
   }
 }

@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
 
   private readonly storage: Storage = inject(Storage);
 
-  controller = new UploaderController('didi', ['.jpg', '.jpeg', '.png', '.pdf', '.docx', '.xlsx', '.mp4', '.avi', '.mkv', '.mov', '.webm', '.gif', '.txt', '.zip']);
+  controller = new UploaderController('didi', ['.jpg', '.jpeg', '.png', '.pdf', '.docx', '.xlsx', '.mp4', '.avi', '.mkv', '.mov', '.webm', '.gif', '.txt', '.zip'], true);
 
   ngOnInit() {
     // Initialize the uploader service if needed
